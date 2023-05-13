@@ -1,7 +1,7 @@
 ---
 title: "ProyectoFinal"
 author: "Miguel Sosa"
-date: "2023-03-23"
+date: "2023-05-11"
 output: pdf_document
 ---
 
@@ -11,20 +11,33 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r}
+library(queueing)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+lambda = 1/5 # Tasa de llegada (tractocamiones por minuto)
+mu = 1/10 # Tasa de servicio (tractocamiones por minuto)
+servers = 2 # Número de servidores
+K = 15 # Tamaño del sistema
+population = 72 # Tamaño de la población
 
-```{r cars}
-summary(cars)
+
+i_mmckm <- NewInput.MMCKM(lambda,mu  ,servers,K,population)
+o_mmckm <- QueueingModel(i_mmckm)
+
+
+Report(o_mmckm)
+summary(o_mmckm)
+
+
+muoptimizada = 1/5
+maspersonal = 10
+
+
+i_mmckmbetter <- NewInput.MMCKM(lambda,muoptimizada  ,maspersonal,K,population)
+o_mmckmbetter <- QueueingModel(i_mmckmbetter)
+
+CompareQueueingModels(o_mmckm,o_mmckmbetter)
+Report(o_mmckmbetter)
+
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
