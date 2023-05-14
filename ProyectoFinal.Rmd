@@ -29,8 +29,8 @@ Report(o_mmckm)
 summary(o_mmckm)
 
 
-muoptimizada = 1/5
-maspersonal = 10
+muoptimizada = 1/5 # Tasa de llegada (tractocamiones por minuto) se optimizo por que se digitalizo el proceso
+maspersonal = 10 # Número de servidores se capacitaron mas personas para liberar tractocamiones
 
 
 i_mmckmbetter <- NewInput.MMCKM(lambda,muoptimizada  ,maspersonal,K,population)
