@@ -10,6 +10,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## R Markdown
+La empresa Daimler Truck cuenta con diferentes secciones que conforman el proceso que sigue un tractocamión después de haber sido ensamblado. En primer lugar, el tractocamión pasa por la sección de Alineación, luego por Touch Up y posteriormente por Bahías y CRC, antes de poder ser vendido.
+
+Daimler Truck ensambla un promedio de 80 tractocamiones por turno y a este sistema se le provee de forma exponencial cada 5 minutos un tractocamión. El 10% de los tractocamiones no presenta ninguna falla significativa y, después de pasar por Touch Up, se dirige directamente a CRC. El 90% restante sigue todo el proceso mencionado anteriormente.
+
+Bahías es el área donde se realizan inspecciones, reparaciones y mantenimiento de los vehículos pesados. Hay 15 empleados trabajando en esta sección, pero solo 2 de ellos están capacitados para darle salida a los tractocamiones hacia CRC. En Alineación y Touch Up no hay problemas en cuanto al rendimiento, ya que cuentan con suficientes servidores. El problema se encuentra en Bahías, ya que solo tiene 2 servidores y el tiempo de servicio es de 1 tractocamión cada 10 minutos. Este es el punto donde se detecta un cuello de botella en el sistema y es ahí donde se enfocará la atención.
+
+Es importante aclarar que si un tractocamión no llega a CRC después de pasar por Bahías, se pierde una venta por día.
+
 
 ```{r}
 library(queueing)
@@ -29,6 +37,42 @@ Report(o_mmckm)
 summary(o_mmckm)
 
 
+
+
+```
+
+a) ¿Cuál es la tasa de utilización de los servidores utilizados en el proceso?
+RO: Tasa de utilización de los servidores, es decir, la fracción del tiempo en que los servidores están ocupados
+(1, lo que indica que los servidores están completamente ocupados).
+
+b)¿Cuál es la probabilidad de que el sistema se encuentre vacío?
+P0: Probabilidad de que el sistema esté vacío (3.252122e-28, lo que indica que la probabilidad de que no haya
+ningún tractocamión en el sistema es extremadamente baja).
+
+c)¿Cuál es el número promedio de tractocamiones que se encuentran en cola en el sistema?    
+Lq: Número promedio de tractocamiones en la cola (12.98247 tractocamiones).
+
+d) ¿Cuál es el tiempo promedio de espera en la cola?
+Wq: Tiempo promedio de espera en la cola (64.91233 minutos).
+
+e) ¿Cuál es el número promedio de tractocamiones en el sistema?
+L: Número promedio de tractocamiones en el sistema (14.98247 clientes).
+
+f) ¿Cuál es el tiempo promedio que un tractocamión pasa en el sistema?
+W:Tiempo promedio que un tractocamión pasa en el sistema (74.91233 minutos).
+
+
+
+Para garantizar la calidad y eficiencia en el trabajo del departamento, se sugiere considerar una disminución en
+el nivel de ocupación. Esto permitiría asegurar que la carga de trabajo asignada a cada persona sea adecuada,
+evitando situaciones de sobrecarga que puedan afectar la calidad del trabajo.
+A continuación se planteara el mejor caso para llegar a este resultado.
+Donde se implementa la digitalización del proceso el tiempo de servicio ya no son 10 minutos si no 5 minutos y
+se contrata mas personal capacitado llegando a un total de 10.
+
+
+```{r}
+library(queueing)
 muoptimizada = 1/5 # Tasa de llegada (tractocamiones por minuto) se optimizo por que se digitalizo el proceso
 maspersonal = 10 # Número de servidores se capacitaron mas personas para liberar tractocamiones
 
@@ -38,6 +82,22 @@ o_mmckmbetter <- QueueingModel(i_mmckmbetter)
 
 CompareQueueingModels(o_mmckm,o_mmckmbetter)
 Report(o_mmckmbetter)
-
 ```
+
+a).
+En el segundo modelo (RO=0.9999977), los servidores están ocupados la mayor parte del tiempo, pero no
+siempre al 100%, lo que indica que se presenta una alta utilización del sistema pero no una congestión.
+b).
+En el Segundo Modelo , el valor de P0 es ligeramente mayor (1.989018e-16), lo que indica que aunque la
+probabilidad de que el sistema esté vacío es muy baja, no es cero.
+c)
+En el segundo modelo, el valor de Lq es menor, lo que indica que hay menos
+clientes esperando.(4.793428 tractocamiones)
+d)
+En el segundo modelo, el valor de Wq es menor por lo tanto los tiempos de espera son más cortos.(2.39672 minutos )
+e)
+En ambas tablas, los valores de L son relativamente similares, lo que sugiere que la cantidad de clientes que se
+están atendiendo y el tiempo que pasan en el sistema son similares.(14.79341 clientes)
+f)
+En el segundo modelo el iempo promedio que un tractocamión pasa en el sistema igual a 7.39672 minutos .
 
